@@ -10,3 +10,4 @@
     - Method: GET
     - Path: http://${dockerhostname}:8200/v1/secret/my-secret
     - Headers: "X-Vault-Token: $VAULT_TOKEN"
+- `docker-compose down` to clean up, `docker-compose down -v` to clean up including persistent data
