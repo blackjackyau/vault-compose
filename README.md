@@ -1,13 +1,6 @@
-## This vault compose will setup secret api v1 instead of v2
-- Credit to input from https://github.com/hashicorp/docker-vault/issues/111
-- `docker-compose up` to run
-- To create an entry
-    - Method: POST
-    - Path: http://${dockerhostname}:8200/v1/secret/my-secret
-    - Headers: "Content-Type: application/json", "X-Vault-Token: $VAULT_TOKEN"
-    - Body: {"first": "you found me"}
-- To query secret
-    - Method: GET
-    - Path: http://${dockerhostname}:8200/v1/secret/my-secret
-    - Headers: "X-Vault-Token: $VAULT_TOKEN"
-- `docker-compose down` to clean up, `docker-compose down -v` to clean up including persistent data
+## Vault compose
+- Run in server mode with persistent behaviour
+- initialise vault, unseal and retrieve root token via the UI (http://localhost:8200) 
+- set the secret threashold to 1 (only 1 unseal token is required upon restarting)
+- `docker-compose down` to shutdown down container (data will still be persisted)
+- `docker-compose down -v` to shutdown down container including volume (data will be gone)
