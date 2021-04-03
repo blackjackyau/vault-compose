@@ -1,30 +1,23 @@
 version: '3'
 services:
   vault:
-    image: "vault"
+    image: "vault:latest"
     cap_add:
         - IPC_LOCK
-    environment:
-        SKIP_SETCA: disabled
-        VAULT_ADDR: "http://0.0.0.0:8200"
-        VAULT_DEV_ROOT_TOKEN_ID: dev-root-token
     volumes:
-        - vault-config:/vault/config
-        - vault-policies:/vault/policies
-        - vault-data:/vault/data
+        - vault-file:/vault/file
+        - vault-unseal:/vault/unseal
+        - ./config:/vault/config:rw
+    command: >
+        vault server -config='/vault/config'
+    environment:
+        - VAULT_ADDR=http://0.0.0.0:8200
+        - VAULT_API_ADDR=http://0.0.0.0:8200
+        - VAULT_ADDRESS=http://0.0.0.0:8200
     ports:
       - "8200:8200"
-    healthcheck:
-      test: "vault login dev-root-token &&
-             vault kv get secret &&
-             vault secrets disable secret &&
-             vault secrets enable -version=1 -path=secret kv"
-      interval: 5s
-
 volumes:
-  vault-config:
+  vault-file:
     driver: local
-  vault-policies:
-    driver: local
-  vault-data:
+  vault-unseal:
     driver: local
